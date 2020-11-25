@@ -1,21 +1,15 @@
 const express = require('express')
 
-const config = require('./config/app')
+const myConfig = require('./config/app')
+
+const router = require('./router')
 
 const app = express()
 
-app.get('/home', (req, res) =>{
-    return res.send("Home screen")
-})
+app.use(router)
 
-const port = config.appPort
-
-app.get('/login', (req, res) =>{
-    return res.send("Login screen work")
-})
+const port = myConfig.appPort
 
 app.listen(port, ()=>{
     console.log('Server listening on port 8081')
 })
-
-console.log("Hello World")

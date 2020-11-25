@@ -1,7 +1,7 @@
 const router = require('express').Router()
 
-router.get('/login', (req, res) =>{
-    return res.send("Login screen work")
+router.post('/login', (req, res) =>{
+    return res.status(200).send(['Login',req.body])
 })
 
 router.get('/register', (req, res) =>{

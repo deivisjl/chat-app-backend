@@ -21,7 +21,7 @@ exports.login = async(req, res) =>{
         if(!bcrypt.compareSync(password, user.password)) return res.status(401).send({message:'Invalid credentials!'})
 
         const userWithToken = generateToken(user.get({raw:true}))
-        userWithToken.avatar = user.avatar
+        userWithToken.user.avatar = user.avatar
 
         return res.status(200).send(userWithToken)
     }
@@ -50,5 +50,5 @@ const generateToken = (user) =>{
 
     const token = jwt.sign(user, config.appKey, {expiresIn: 86400})
 
-    return {...user, ...{ token }}
+    return {...{ user }, ...{ token }}
 }

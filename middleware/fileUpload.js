@@ -5,7 +5,7 @@ const path = require('path')
 exports.userFile = ((req, res, next)=>{
     
     const getFileType = (file)=>{
-        const mimeType = file.mimeType.split('/')
+        const mimeType = file.mimetype.split('/')
         return mimeType[mimeType.length - 1]
     }
     const generateFileName = (req, file, cb) =>{
@@ -32,7 +32,7 @@ exports.userFile = ((req, res, next)=>{
 
     const storage = multer.diskStorage({
         destination: function(req, file, cb){
-            const {id} = req.body
+            const {id} = req.user
             const dest = `uploads/user/${id}`
             fs.access(dest, (err)=>{
                 //if doesn't exit
@@ -59,4 +59,4 @@ exports.userFile = ((req, res, next)=>{
     })
 
     return multer({storage, fileFilter}).single('avatar')
-}) 
+})() 

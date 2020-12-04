@@ -41,9 +41,7 @@ const SocketServer = (server) =>{
                     chatter.sockets.forEach(socket=>{
                         try {
                             io.to(socket).emit('online', user)
-                        } catch (error) {
-                            
-                        }
+                        } catch (error) {}
                     })
 
                     onlineFriends.push(chatter.id)

@@ -82,7 +82,7 @@ const SocketServer = (server) =>{
                     chatId:message.chatId,
                     message:message.message
                 }
-                console.log(msg)
+                
                 const savedMessage = await Message.create(msg)
 
                 message.User = message.fromUser
@@ -98,6 +98,16 @@ const SocketServer = (server) =>{
             } catch (error) {
                 console.log("error: " + error)
             }
+        })
+
+        socket.on('typing', (message) => {
+            message.toUserId.forEach(id => {
+                if (users.has(id)) {
+                    users.get(id).sockets.forEach(socket => {
+                        io.to(socket).emit('typing', message)
+                    })
+                }
+            })
         })
 
         socket.on('disconnect', async()=>{

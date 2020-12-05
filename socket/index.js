@@ -145,7 +145,7 @@ const SocketServer = (server) =>{
                         }
                     }
                     userSockets.delete(socket.id)
-                    user.delete(user.id)
+                    users.delete(user.id)
                 }
             }
         })

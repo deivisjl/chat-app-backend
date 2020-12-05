@@ -102,7 +102,7 @@ exports.create = async (req, res) =>{
         })
 
         await t.commit()
-
+        console.log("Hello: " + chatNew)
         return res.json(chatNew)
 
     } catch (e) {

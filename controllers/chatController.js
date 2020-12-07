@@ -203,7 +203,9 @@ exports.addUserToGroup = async(req, res) =>{
             ]
         })
 
-        //check if lready in the group
+        chat.Messages.reverse()
+        
+        //check if already in the group
         chat.Users.forEach(user =>{
             if(user.id === userId){
                 return res.status(403).json({ message: 'User already in the group' })

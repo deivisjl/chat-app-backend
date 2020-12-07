@@ -139,7 +139,7 @@ const SocketServer = (server) =>{
 
             //old
             chat.Users.forEach((user, index) =>{
-                if(user.has(user.id)){
+                if(users.has(user.id)){
                     chat.Users[index].status = 'online' 
                     users.get(user.id).sockets.forEach(socket =>{
                         try {

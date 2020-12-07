@@ -112,9 +112,9 @@ const SocketServer = (server) =>{
 
         socket.on('add-friend', (chats) =>{
             try {
-                let online = false
+                let online = 'offline'
                 if(userStatus.has(chats[1].Users[0].id)){
-                    online = true
+                    online = 'online'
                     chats[0].Users[0].status = 'online'
                     users.get(chats[1].Users[0].id).sockets.forEach(socket => {
                         io.to(socket).emit('new-chat', chats[0])
@@ -130,6 +130,34 @@ const SocketServer = (server) =>{
                 
             }
         })
+
+        socket.on('add-user-to-group', ({chat, newChatter}) =>{
+            
+            if(users.has(newChatter.id)){
+                newChatter.status = 'online'
+            }
+
+            //old
+            chat.Users.forEach((user, index) =>{
+                if(user.has(user.id)){
+                    chat.Users[index].status = 'online' 
+                    users.get(user.id).sockets.forEach(socket =>{
+                        try {
+                            io.to(socket).emit('added-user-to-group', {chat,chatters:[newChatter]})
+                        } catch (error) {}
+                    })
+                }
+            })
+
+            //send to new chatter
+            if(users.has(newChatter.id)){
+                users.get(newChatter.id).sockets.forEach(socket =>{
+                    try {
+                        io.to(socket).emit('added-user-to-group', {chat,chatters:chat.Users })
+                    } catch (error) {}
+                })
+            }
+        }) 
 
         socket.on('disconnect', async()=>{
             /* users.forEach((user, key)=>{

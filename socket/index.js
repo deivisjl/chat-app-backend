@@ -173,6 +173,20 @@ const SocketServer = (server) =>{
             })
         })
 
+        socket.on('delete-chat', (data) =>{
+            const {chatId, notifyUsers} = data
+
+            notifyUsers.forEach(id =>{
+                if(users.has(id)){
+                    users.get(id).sockets.forEach(socket =>{
+                        try {
+                            io.to(socket).emit('delete-chat', parseInt(chatId))
+                        } catch (error) {}
+                    })
+                }
+            })
+        })
+
         socket.on('disconnect', async()=>{
             /* users.forEach((user, key)=>{
                 user.sockets.forEach(socketUser =>{

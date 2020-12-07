@@ -6,6 +6,6 @@ const {rules:updateRules} = require('../validators/user/update')
 const {userFile} = require('../middleware/fileUpload')
 
 router.post('/update', [auth, userFile, updateRules, validate], update)
-router.post('/search-users', auth, search)
+router.get('/search-users', auth, search)
 
 module.exports = router

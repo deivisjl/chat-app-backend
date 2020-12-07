@@ -35,7 +35,7 @@ exports.search = async (req, res) =>{
             where:{
                 [sequelize.Op.or] : {
                     namaesConcated: sequelize.where(
-                        sequelize.fn('concat', sequelize.col('firstname'),' ', sequelize.col('lastName')),
+                        sequelize.fn('concat', sequelize.col('firstName'),' ', sequelize.col('lastName')),
                         {
                             [sequelize.Op.iLike] : `%${req.query.term}%`
                         }

@@ -81,8 +81,10 @@ exports.create = async (req, res) =>{
                 userId: partnerId
             }
         ], {transaction: t})
-        /* transaction */
-        const chatNew = await Chat.findOne({
+        
+        await t.commit()
+
+        /* const chatNew = await Chat.findOne({
             where:{
                 id: chat.id
             },
@@ -99,11 +101,35 @@ exports.create = async (req, res) =>{
                     model:Message,
                 }
             ]
+        }) */
+        
+        const creator = await User.findOne({
+            where: {
+                id: req.user.id
+            }
         })
 
-        await t.commit()
-        console.log("Hello: " + chatNew)
-        return res.json(chatNew)
+        const partner = await User.findOne({
+            where: {
+                id: partnerId
+            }
+        })
+
+        const forCreator ={
+            id: chat.id,
+            type: 'dual',
+            Users: [partner],
+            Messages:[]
+        }
+
+        const forReceiver = {
+            id: chat.id,
+            type: 'dual',
+            Users: [creator],
+            Messages:[]
+        }
+
+        return res.json([forCreator, forReceiver])
 
     } catch (e) {
         await t.rollback()

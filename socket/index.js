@@ -110,6 +110,27 @@ const SocketServer = (server) =>{
             })
         })
 
+        socket.on('add-friend', (chats) =>{
+            try {
+                let online = false
+                if(userStatus.has(chats[1].Users[0].id)){
+                    online = true
+                    chats[0].Users[0].status = 'online'
+                    users.get(chats[1].Users[0].id).sockets.forEach(socket => {
+                        io.to(socket).emit('new-chat', chats[0])
+                    })
+                }
+                if(users.has(chats[0].Users[0].id)){
+                    chats[1].Users[0].status = online
+                    users.get(chats[0].Users[0].id).sockets.forEach(socket => {
+                        io.to(socket).emit('new-chat', chats[1])
+                    })
+                }
+            } catch (error) {
+                
+            }
+        })
+
         socket.on('disconnect', async()=>{
             /* users.forEach((user, key)=>{
                 user.sockets.forEach(socketUser =>{
